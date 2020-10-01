@@ -41,7 +41,7 @@ export default function App() {
 				value={selectedSeason || 'Select a season'}
 				placeholder="Select an option"
 			/>
-			<Episodes data-testid='episodes' episodes={episodes} />
+			<Episodes episodes={episodes} />
 		</div>
 	);
 }
