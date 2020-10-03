@@ -6,21 +6,28 @@ import { fetchShow as mockFetchShow } from './api/fetchShow';
 import { episodeFixture } from './components/Episodes.test';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('./api/fetchShow')
+const mockResObj = {
+	data: {
+		_embedded: {
+			episodes: [{ episodeFixture }],
+		},
+	},
+};
 
+jest.mock('./api/fetchShow');
 
 test('App renders without crashing', () => {
-    render(<App />)
-})
+	render(<App />);
+});
 
 test('Displays dropdown list of options when Select Season is clicked', async () => {
-    mockFetchShow.mockResolvedValueOnce({ data: episodeFixture })
+	mockFetchShow.mockResolvedValueOnce(mockResObj);
 
-    const { queryByTestId } = render(<App />);
-    const dropdown = queryByTestId('dropdown');
+	const { queryAllByTestId } = render(<App />);
+	const dropdown = queryAllByTestId('dropdown');
 
-    await waitFor(userEvent.click(dropdown))    
-    await waitFor(() => {
-        expect(dropdown.length).toBe(4);
-    })
-})
+	await waitFor(userEvent.click(dropdown));
+	await waitFor(() => {
+		expect(dropdown.length).toBe(4);
+	});
+});
